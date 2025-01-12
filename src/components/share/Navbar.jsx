@@ -8,25 +8,31 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleLogout = () => {
     logOut()
-    
   };
   return (
     <nav className="bg-blue-600 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold">
+            <Link className="text-2xl font-bold">
               Employee Management
             </Link>
           </div>
 
           <div className="hidden md:flex space-x-4">
+            {
+              user?.role=='admin'?(
+                ""
+              ):
+            (
             <Link
               to="/register"
               className="hover:bg-blue-500 px-3 py-2 rounded-md text-sm font-medium"
             >
               Register
             </Link>
+            )
+            }
             {
               user?
             <Link
@@ -98,36 +104,53 @@ const Navbar = () => {
 
       {isMenuOpen && (
         <div className="md:hidden bg-blue-500">
-          <Link
-            to="/register"
-            className="block px-4 py-2 text-sm hover:bg-blue-400"
-          >
-            Register
-          </Link>
-          <Link
+          {
+              user?.role=='admin'?(
+                ""
+              ):
+            (
+            <Link
+              to="/register"
+               className="block px-4 py-2 text-sm hover:bg-blue-400"
+            >
+              Register
+            </Link>
+            )
+            }
+            {
+              user?
+            <Link
+              onClick={handleLogout}
+            className="block w-full text-left px-4 py-2 text-sm hover:bg-red-400"
+            >
+              Logout
+            </Link>
+            :
+            <Link
             to="/login"
             className="block px-4 py-2 text-sm hover:bg-blue-400"
           >
             Login
           </Link>
-          <Link
-            to="/employee_dashboard"
-            className="block px-4 py-2 text-sm hover:bg-blue-400"
-          >
-            Dashboard
-          </Link>
-          <Link
-            to="/admin_dashboard"
-            className="block px-4 py-2 text-sm hover:bg-blue-400"
-          >
-            Dashboard
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-sm hover:bg-red-400"
-          >
-            Logout
-          </button>
+            }
+          {
+              user?.role=='employee'&&
+            <Link
+              to="/employee_dashboard"
+              className="block px-4 py-2 text-sm hover:bg-blue-400"
+            >
+              Dashboard
+            </Link>
+            }
+            {
+            user?.role=='admin' &&
+            <Link
+              to="/admin_dashboard"
+              className="block px-4 py-2 text-sm hover:bg-blue-400"
+            >
+              Dashboard
+            </Link>
+            }
         </div>
       )}
     </nav>

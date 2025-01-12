@@ -6,7 +6,6 @@ import Header from "./components/Header";
 import FilterItems from "./components/FilterItems";
 import ItemsCard from "./components/ItemsCard";
 import { calculateTaskTotals, filterTasks } from "./utils";
-import Scleton from "./components/Scleton";
 
 const EmployeeDashboard = () => (
     <EmployeeProvider>
@@ -26,9 +25,6 @@ const EmployeeDashboardContent = () => {
             getAssignedTask({ id: user._id });
         }
     }, [state.updateTask]);
-    if(state.employeeTasks.length==0){
-        return <Scleton></Scleton>
-    }
     const handleFilterValue=(value)=>{
         setFilterValue(value)
     }

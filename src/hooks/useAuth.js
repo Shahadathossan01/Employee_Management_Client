@@ -6,7 +6,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import app from "../firebase";
 
 export const useAuth=()=>{
-    const {user,dispatch}=useContext(AuthContext)
+    const {user,dispatch,registerData}=useContext(AuthContext)
 
     const login=async({email,password,navigate})=>{
        const {data}=await axios.post('http://localhost:3000/user/auth/login',{
@@ -25,19 +25,25 @@ export const useAuth=()=>{
        }
     }
 
-    const register=async({formData,navigate})=>{
-        console.log(formData)
+    const register=async({formData,navigate=false})=>{
         const {data}=await axios.post('http://localhost:3000/user/auth/register',{
             username:{
                 firstname:formData.firstname,
                 lastname:formData.lastname
             },
             email:formData.email,
-            password:formData.password
+            password:formData.password,
+            role:formData?.role
         })
-        if(data){
+        console.log(data)
+        dispatch({
+            type:"REGISTER",
+            payload:data
+        })
+        if(data && navigate){
             navigate('/login')
         }
+
     }
 
     const googleLogin=async({navigate})=>{
@@ -76,5 +82,5 @@ export const useAuth=()=>{
         })
     }
 
-    return {user,login,logOut,register,googleLogin}
+    return {user,login,logOut,register,googleLogin,registerData}
 }
